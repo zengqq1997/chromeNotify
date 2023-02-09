@@ -1,6 +1,7 @@
 const axios = require("axios");
 const execSync = require("./exec");
 const { WEIXIN_WEBHOOK } = require("./utils/env");
+const { WEIXIN_WEBHOOK1 } = require("./utils/env");
 
 // 创建忽略 SSL 的 axios 实例
 const instance = axios.create({
@@ -54,5 +55,7 @@ const sendHookMessage = (
         },
     });
     const cmd = `curl '${WEIXIN_WEBHOOK}' -H 'Content-Type: application/json' -d '${objStr}'`;
+    const cmd1 = `curl '${WEIXIN_WEBHOOK1}' -H 'Content-Type: application/json' -d '${objStr}'`;
     const { error, stdout } = execSync(cmd);
+    const { error1, stdout1 } = execSync(cmd1);
 };
