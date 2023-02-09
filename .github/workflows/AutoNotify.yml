@@ -1,9 +1,9 @@
 name: AutoNotify
 
-// 配置每天九点检测
+
 on:
   schedule:
-    - cron: "0 9 * * *" # 北京时间上午06:30
+    - cron: "0 9 * * *" #  配置每天九点检测
   workflow_dispatch:
 
 env:
