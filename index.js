@@ -22,20 +22,21 @@ instance({ url: "/channels" }, (error, response, data) => {
             chromeData = result.data;
         }
         const stable = chromeData?.stable ?? {};
-        const stableUpdateTime = stable?.stable_date;
-        const nextStableRefresh = stable?.next_stable_refresh;
-
+        const stableUpdateTime = stable?.next_stable_refresh
+            ? stable?.next_stable_refresh
+            : stable?.stable_date;
+        const version = stable?.mstone;
         const time2date = new Date(stableUpdateTime);
         // 因为谷歌上的升级时间表上的时间与预期会延迟个一天，所以将获取到的日期加一天
         time2date.setDate(time2date.getDate() + 1);
         const month = time2date.getMonth();
         const date = time2date.getDate();
         const nowDate = new Date();
-        sendHookMessage(
-            `谷歌浏览器下次更新时间:${nextStableRefresh ?? stableUpdateTime}`
-        );
+
         if (month === nowDate.getMonth() && date === nowDate.getDate()) {
-            sendHookMessage("今日谷歌浏览器有新版本，请注意更新");
+            sendHookMessage(`今日谷歌浏览器有新版本，请注意更新, ${version}`);
+        } else {
+            sendHookMessage(`谷歌浏览器下次更新时间:${stableUpdateTime}`);
         }
     })
     .catch((err) => {
