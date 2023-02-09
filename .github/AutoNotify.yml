@@ -1,0 +1,22 @@
+name: AutoNotify
+
+// 配置每天九点检测
+on:
+  schedule:
+    - cron: "0 9 * * *" # 北京时间上午06:30
+  workflow_dispatch:
+
+env:
+  WEIXIN_WEBHOOK: ${{ secrets.WEIXIN_WEBHOOK }}
+  WEIXIN_WEBHOOK1: ${{ secrets.WEIXIN_WEBHOOK1 }}
+
+jobs:
+  Notify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+      - name: Run Project
+        run: |
+          npm install
+          npm run notify
