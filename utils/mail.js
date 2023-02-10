@@ -16,7 +16,7 @@ const transporter = nodemailer.createTransport({
 /**
  * 发送邮件
  */
-const sendMail = (content) =>{
+const sendMail = async (content) =>{
     let info = await transporter.sendMail({
         from: `"chrom升级助手" <${MAIL}>`, // sender address
         to: MAIL, // list of receivers
