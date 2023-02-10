@@ -16,7 +16,7 @@ const transporter = nodemailer.createTransport({
 /**
  * 发送邮件
  */
-export async function sendMail(content){
+const sendMail = (content) =>{
     let info = await transporter.sendMail({
         from: `"chrom升级助手" <${MAIL}>`, // sender address
         to: MAIL, // list of receivers
@@ -24,3 +24,6 @@ export async function sendMail(content){
     });
     console.log("Message sent: %s", info.messageId);
 }
+
+
+module.exports = {sendMail}
