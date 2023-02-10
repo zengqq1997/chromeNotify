@@ -16,11 +16,16 @@ const transporter = nodemailer.createTransport({
 /**
  * 发送邮件
  */
-const sendMail = async (content) =>{
+const sendMail = async () =>{
+    const failedMsg = {
+        subject: "企业微信HOOK机器人发送消息失败！", // Subject line
+        text: "企业微信HOOK机器人发送消息失败！联系管理员！", // plain text body
+        html: "<b>企业微信HOOK机器人发送消息失败！联系管理员！</b>", // html body
+    }
     let info = await transporter.sendMail({
         from: `"chrom升级助手" <${MAIL}>`, // sender address
         to: MAIL, // list of receivers
-        ...content
+        ...failedMsg,
     });
     console.log("Message sent: %s", info.messageId);
 }

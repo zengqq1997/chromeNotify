@@ -1,6 +1,6 @@
 const axios = require("axios");
 const execSync = require("./exec");
-const { WEIXIN_WEBHOOK,  WEIXIN_WEBHOOK1  } = require("./utils/env");
+const { WEIXIN_WEBHOOK, WEIXIN_WEBHOOK1 } = require("./utils/env");
 const { sendMail } = require("./utils/mail");
 
 // 创建忽略 SSL 的 axios 实例
@@ -38,7 +38,6 @@ instance({ url: "/channels" }, (error, response, data) => {
             sendHookMessage(`今日谷歌浏览器有新版本，请注意更新, ${version}`);
         } else {
             sendHookMessage(`谷歌浏览器下次更新时间:${year}-${month}-${date}`);
-            sendMail(`谷歌浏览器下次更新时间:${year}-${month}-${date}`)
         }
     })
     .catch((err) => {
@@ -66,7 +65,7 @@ const sendHookMessage = (
     const cmd = `curl '${WEIXIN_WEBHOOK}' -H 'Content-Type: application/json' -d '${objStr}'`;
     const cmd1 = `curl '${hookUrl}' -H 'Content-Type: application/json' -d '${objStr}'`;
     const { error, stdout } = execSync(cmd);
-    sendMail(error)
+    if (error) sendMail();
     const { error1, stdout1 } = execSync(cmd1);
-    sendMail(error1)
+    if (error1) sendMail();
 };
