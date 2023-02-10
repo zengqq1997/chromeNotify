@@ -2,6 +2,7 @@ const axios = require("axios");
 const execSync = require("./exec");
 const { WEIXIN_WEBHOOK } = require("./utils/env");
 const { WEIXIN_WEBHOOK1 } = require("./utils/env");
+const { sendMail } = require("./utils/mail");
 
 // 创建忽略 SSL 的 axios 实例
 const instance = axios.create({
@@ -27,8 +28,9 @@ instance({ url: "/channels" }, (error, response, data) => {
             : stable?.stable_date;
         const version = stable?.mstone;
         const time2date = new Date(stableUpdateTime);
-        // 因为谷歌上的升级时间表上的时间与预期会延迟个一天，所以将获取到的日期加一天
+        // 因为谷歌上的升级时间表上的时间与预期会延迟个一天，大概是时区和地区更新不一致，所以将获取到的日期加一天
         time2date.setDate(time2date.getDate() + 1);
+        const year = time2date.getFullYear();
         const month = time2date.getMonth();
         const date = time2date.getDate();
         const nowDate = new Date();
@@ -36,17 +38,24 @@ instance({ url: "/channels" }, (error, response, data) => {
         if (month === nowDate.getMonth() && date === nowDate.getDate()) {
             sendHookMessage(`今日谷歌浏览器有新版本，请注意更新, ${version}`);
         } else {
-            sendHookMessage(`谷歌浏览器下次更新时间:${stableUpdateTime}`);
+            sendHookMessage(`谷歌浏览器下次更新时间:${year}-${month}-${date}`);
+            sendMail(`谷歌浏览器下次更新时间:${year}-${month}-${date}`)
         }
     })
     .catch((err) => {
-        console.log(err);
+        sendHookMessage(
+            `警告：接口请求异常，请及时处理\n ${err}`,
+            "@曾泉清-6601(zqq)",
+            "text",
+            WEIXIN_WEBHOOK1
+        );
     });
 
 const sendHookMessage = (
     content,
     mentionedMobileList = ["@all"],
-    msgtype = "text"
+    msgtype = "text",
+    hookUrl
 ) => {
     const objStr = JSON.stringify({
         msgtype,
@@ -56,7 +65,9 @@ const sendHookMessage = (
         },
     });
     const cmd = `curl '${WEIXIN_WEBHOOK}' -H 'Content-Type: application/json' -d '${objStr}'`;
-    const cmd1 = `curl '${WEIXIN_WEBHOOK1}' -H 'Content-Type: application/json' -d '${objStr}'`;
+    const cmd1 = `curl '${hookUrl}' -H 'Content-Type: application/json' -d '${objStr}'`;
     const { error, stdout } = execSync(cmd);
+    sendMail(error)
     const { error1, stdout1 } = execSync(cmd1);
+    sendMail(error1)
 };

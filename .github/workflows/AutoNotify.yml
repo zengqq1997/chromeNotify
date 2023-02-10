@@ -9,6 +9,8 @@ on:
 env:
   WEIXIN_WEBHOOK: ${{ secrets.WEIXIN_WEBHOOK }}
   WEIXIN_WEBHOOK1: ${{ secrets.WEIXIN_WEBHOOK1 }}
+  MAIL: ${{ secrets.MAIL }}
+  MAIL_PWD: ${{ secrets.MAIL_PWD }}
 
 jobs:
   Notify:
