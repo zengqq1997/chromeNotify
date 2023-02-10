@@ -1,4 +1,4 @@
-import { MAIL } from './env';
+const { MAIL, MAIL_PWD } = require("./env");
 
 const nodemailer = require('nodemailer');
 
