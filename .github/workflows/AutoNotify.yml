@@ -3,7 +3,7 @@ name: AutoNotify
 
 on:
   schedule:
-    - cron: "00 18 * * *" #  配置每天九点检测
+    - cron: "40 17 * * *" #  配置每天九点检测
   workflow_dispatch:
 
 env:
