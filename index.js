@@ -35,9 +35,9 @@ instance({ url: "/channels" }, (error, response, data) => {
         const nowDate = new Date();
 
         if (month === nowDate.getMonth() && date === nowDate.getDate()) {
-            sendHookMessage(`今日谷歌浏览器有新版本，请注意更新, ${version}`);
+            sendHookMessage(`今日谷歌浏览器有新版本，请注意更新, ${version}`,"@曾泉清-6601(zqq)",);
         } else {
-            sendHookMessage(`谷歌浏览器下次更新时间:${year}-${month}-${date}`);
+            sendHookMessage(`谷歌浏览器下次更新时间:${year}-${month}-${date}`,"@曾泉清-6601(zqq)",);
         }
     })
     .catch((err) => {
