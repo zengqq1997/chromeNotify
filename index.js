@@ -35,15 +35,21 @@ instance({ url: "/channels" }, (error, response, data) => {
         const nowDate = new Date();
 
         if (month === nowDate.getMonth() && date === nowDate.getDate()) {
-            sendHookMessage(`今日谷歌浏览器有新版本，请注意更新, ${version}`,["zqq"],);
+            sendHookMessage(
+                `今日谷歌浏览器有新版本，请注意更新, ${version}`,
+                MOBILE ? [`${MOBILE}`] : ""
+            );
         } else {
-            sendHookMessage(`谷歌浏览器下次更新时间:${year}-${month}-${date}`,["zqq"],);
+            sendHookMessage(
+                `谷歌浏览器下次更新时间:${year}-${month}-${date}`,
+                MOBILE ? [`${MOBILE}`] : ""
+            );
         }
     })
     .catch((err) => {
         sendHookMessage(
             `警告：接口请求异常，请及时处理\n ${err}`,
-            ["zqq"],
+            MOBILE ? [`${MOBILE}`] : "",
             "text",
             WEIXIN_WEBHOOK1
         );
@@ -60,7 +66,6 @@ const sendHookMessage = (
         text: {
             content,
             mentioned_mobile_list: mentionedMobileList,
-            mentioned_list: ["zqq"]
         },
     });
     const cmd = `curl '${WEIXIN_WEBHOOK}' -H 'Content-Type: application/json' -d '${objStr}'`;

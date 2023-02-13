@@ -9,5 +9,5 @@ module.exports = {
   WEIXIN_WEBHOOK1: env.WEIXIN_WEBHOOK1,
   MAIL: env.MAIL,
   MAIL_PWD: env.MAIL_PWD,
- 
+  MOBILE: env.MOBILE
 };
