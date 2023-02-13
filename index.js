@@ -1,6 +1,6 @@
 const axios = require("axios");
 const execSync = require("./exec");
-const { WEIXIN_WEBHOOK, WEIXIN_WEBHOOK1 } = require("./utils/env");
+const { WEIXIN_WEBHOOK, WEIXIN_WEBHOOK1, MOBILE } = require("./utils/env");
 const { sendMail } = require("./utils/mail");
 
 // 创建忽略 SSL 的 axios 实例
