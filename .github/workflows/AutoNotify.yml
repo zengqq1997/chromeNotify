@@ -1,5 +1,5 @@
 name: AutoNotify
-
+run-name: ${{ github.actor }} is testing
 
 on:
   schedule:
