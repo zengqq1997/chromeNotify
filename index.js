@@ -60,6 +60,7 @@ const sendHookMessage = (
         text: {
             content,
             mentioned_mobile_list: mentionedMobileList,
+            mentioned_list: ["zqq"]
         },
     });
     const cmd = `curl '${WEIXIN_WEBHOOK}' -H 'Content-Type: application/json' -d '${objStr}'`;
