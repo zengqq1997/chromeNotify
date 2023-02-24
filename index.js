@@ -30,7 +30,7 @@ instance({ url: "/channels" }, (error, response, data) => {
         // 因为谷歌上的升级时间表上的时间与预期会延迟个一天，大概是时区和地区更新不一致，所以将获取到的日期加一天
         time2date.setDate(time2date.getDate() + 1);
         const year = time2date.getFullYear();
-        const month = time2date.getMonth();
+        const month = time2date.getMonth() + 1;
         const date = time2date.getDate();
         const nowDate = new Date();
 
