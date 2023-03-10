@@ -42,7 +42,7 @@ instance({ url: "/channels" }, (error, response, data) => {
         betaTime2date.setDate(betaTime2date.getDate() + 1);
 
         const year = time2date.getFullYear();
-        const month = time2date.getMonth();
+        const month = time2date.getMonth() + 1;
         const date = time2date.getDate();
         const nowDate = new Date();
 

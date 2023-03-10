@@ -1,5 +1,5 @@
 name: AutoNotify
-
+run-name: ${{ github.actor }} is testing
 
 on:
   schedule:
@@ -21,7 +21,14 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
+      - name: Cache node modules
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - run: npm install
       - name: Run Project
         run: |
-          npm install
           npm run notify
