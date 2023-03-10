@@ -71,7 +71,7 @@ instance({ url: "/channels" }, (error, response, data) => {
                 MOBILE ? [`${MOBILE}`, `${MOBILE2}`] : "",
                 "text",
                 // 每日
-                WEIXIN_WEBHOOK2
+                WEIXIN_WEBHOOK
             );
         }
     })
