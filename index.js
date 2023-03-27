@@ -30,8 +30,8 @@ instance({ url: "/channels" }, (error, response, data) => {
         const stable = chromeData?.stable ?? {};
         const beta = chromeData?.beta ?? {};
         const stableUpdateTime = stable?.stable_date
-            ? stable?.next_stable_refresh
-            : stable?.stable_date;
+            ? stable?.stable_date
+            : stable?.next_stable_refresh;
         const betaUpdateTime = beta?.stable_date;
         const version = stable?.mstone;
         const betaVersion = beta?.mstone;
@@ -67,7 +67,11 @@ instance({ url: "/channels" }, (error, response, data) => {
                 );
         } else {
             sendHookMessage(
-                `谷歌浏览器下次更新时间:${year}-${month}-${date}`,
+                `谷歌浏览器下次更新时间:${
+                    stable?.next_stable_refresh ? year : betaYear
+                }-${stable?.next_stable_refresh ? month : betaMonth}-${
+                    stable?.next_stable_refresh ? date : betaDate
+                }`,
                 MOBILE ? [`${MOBILE}`, `${MOBILE2}`] : "",
                 "text",
                 // 每日
