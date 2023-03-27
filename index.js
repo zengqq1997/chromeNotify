@@ -29,10 +29,12 @@ instance({ url: "/channels" }, (error, response, data) => {
         }
         const stable = chromeData?.stable ?? {};
         const beta = chromeData?.beta ?? {};
-        const stableUpdateTime = stable?.stable_date
-            ? stable?.stable_date
-            : stable?.next_stable_refresh;
-        const betaUpdateTime = beta?.stable_date;
+        const stableUpdateTime = stable?.next_stable_refresh
+            ? stable?.next_stable_refresh
+            : stable?.stable_date;
+        const betaUpdateTime = beta?.late_stable_date
+            ? beta?.late_stable_date
+            : beta?.stable_date;
         const version = stable?.mstone;
         const betaVersion = beta?.mstone;
         const time2date = new Date(stableUpdateTime);
@@ -51,18 +53,21 @@ instance({ url: "/channels" }, (error, response, data) => {
         const betaDate = betaTime2date.getDate();
 
         if (
-            month === nowDate.getMonth() &&
-            date === nowDate.getDate() &&
-            year === nowDate.getFullYear()
+            (month === nowDate.getMonth() &&
+                date === nowDate.getDate() &&
+                year === nowDate.getFullYear()) ||
+            (betaMonth === nowDate.getMonth() &&
+                betaDate === nowDate.getDate() &&
+                betaYear === nowDate.getFullYear())
         ) {
             if (year === betaYear && betaMonth === month && date === betaDate) {
                 sendHookMessage(
-                    `请注意，今日谷歌浏览器有大版本更新，更新版本, ${betaVersion}`,
+                    `请注意，今日谷歌浏览器有版本更新，更新版本, ${betaVersion}`,
                     MOBILE ? [`${MOBILE}`, `${MOBILE2}`] : ""
                 );
             } else
                 sendHookMessage(
-                    `请注意今日谷歌浏览器有小版本，更新版本， ${version}`,
+                    `请注意今日谷歌浏览器有版本，更新版本， ${version}`,
                     MOBILE ? [`${MOBILE}`, `${MOBILE2}`] : ""
                 );
         } else {
