@@ -42,13 +42,13 @@ instance({ url: "/channels" }, (error, response, data) => {
         betaTime2date.setDate(betaTime2date.getDate() + 1);
 
         const year = time2date.getFullYear();
-        const month = time2date.getMonth() + 1;
+        const month = time2date.getMonth();
         const date = time2date.getDate();
         const nowDate = new Date();
 
-        const betaYear = time2date.getFullYear();
-        const betaMonth = time2date.getMonth();
-        const betaDate = time2date.getDate();
+        const betaYear = betaTime2date.getFullYear();
+        const betaMonth = betaTime2date.getMonth();
+        const betaDate = betaTime2date.getDate();
 
         if (
             month === nowDate.getMonth() &&
@@ -69,7 +69,7 @@ instance({ url: "/channels" }, (error, response, data) => {
             sendHookMessage(
                 `谷歌浏览器下次更新时间:${
                     stable?.next_stable_refresh ? year : betaYear
-                }-${stable?.next_stable_refresh ? month : betaMonth}-${
+                }-${stable?.next_stable_refresh ? month + 1 : betaMonth + 1}-${
                     stable?.next_stable_refresh ? date : betaDate
                 }`,
                 MOBILE ? [`${MOBILE}`, `${MOBILE2}`] : "",
