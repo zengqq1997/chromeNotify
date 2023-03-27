@@ -41,7 +41,8 @@ instance({ url: "/channels" }, (error, response, data) => {
         const betaTime2date = new Date(betaUpdateTime);
         // 因为谷歌上的升级时间表上的时间与预期会延迟个一天，大概是时区和地区更新不一致，所以将获取到的日期加一天
         time2date.setDate(time2date.getDate() + 1);
-        betaTime2date.setDate(betaTime2date.getDate() + 1);
+        if (!beta?.late_stable_date)
+            betaTime2date.setDate(betaTime2date.getDate() + 1);
 
         const year = time2date.getFullYear();
         const month = time2date.getMonth();
