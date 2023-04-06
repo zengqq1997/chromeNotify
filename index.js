@@ -73,6 +73,10 @@ instance({ url: "/channels" }, (error, response, data) => {
                 );
         } else {
             sendHookMessage(
+                    `请注意今日谷歌浏览器有版本，更新版本， ${version}`,
+                    MOBILE ? [`${MOBILE}`, `${MOBILE2}`] : ""
+                );
+            sendHookMessage(
                 `谷歌浏览器下次更新时间:${
                     stable?.next_stable_refresh ? year : betaYear
                 }-${stable?.next_stable_refresh ? month + 1 : betaMonth + 1}-${
