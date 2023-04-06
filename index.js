@@ -1,9 +1,9 @@
 const axios = require("axios");
 const execSync = require("./exec");
 const {
-    WEIXIN_WEBHOOK,
-    WEIXIN_WEBHOOK1,
-    WEIXIN_WEBHOOK2,
+    WEIXIN_WEBHOOK,  // 异常提醒
+    WEIXIN_WEBHOOK1, // 每日提醒
+    WEIXIN_WEBHOOK2, // 版本更新提醒
     MOBILE,
     MOBILE2,
 } = require("./utils/env");
@@ -36,13 +36,12 @@ instance({ url: "/channels" }, (error, response, data) => {
             : stable?.stable_date;
         const nextRefreshTime = stable?.next_stable_refresh;
         //stable 版本
-        const version = stable?.mstone;
+        const version = stable?.mstone ? stable.mstone : stable?.version;
         // bate 数据
         const beta = chromeData?.beta ?? {};
         const betaUpdateTime = beta?.late_stable_date
             ? beta?.late_stable_date
             : beta?.stable_date;
-        const betaVersion = beta?.mstone;
 
         const time2date = new Date(stableTime);
         const nextTime2date = new Date(nextRefreshTime);
@@ -58,23 +57,29 @@ instance({ url: "/channels" }, (error, response, data) => {
         let month = time2date.getMonth();
         let date = time2date.getDate();
         // stable 下次更新时间
-        const nextYear = nextTime2date.getFullYear();
-        const nextMonth = nextTime2date.getMonth();
-        const nextDate = nextTime2date.getDate();
+        let nextYear = nextTime2date.getFullYear();
+        let nextMonth = nextTime2date.getMonth();
+        let nextDate = nextTime2date.getDate();
         //当前时间
         const nowYear = nowDate.getFullYear();
         const nowMonth = nowDate.getMonth();
         const nowDay = nowDate.getDate();
-        if (nowYear > year && nowMonth > month && nowDay > date) {
-            year = nextYear;
-            month = nextMonth;
-            date = nextDate;
-        }
 
         // beta 更新时间
         const betaYear = betaTime2date.getFullYear();
         const betaMonth = betaTime2date.getMonth();
         const betaDate = betaTime2date.getDate();
+        // 如果下次的更新时间的月份和beta 更新时间的月份一致，则直接用beta的更新时间
+        if (nextMonth === betaMonth && nextDate < betaDate) {
+            nextDate = betaDate;
+            nextMonth = betaMonth;
+            nextYear = betaYear;
+        }
+        if (nowYear > year || nowMonth > month || nowDay > date) {
+            year = nextYear;
+            month = nextMonth;
+            date = nextDate;
+        }
 
         if (
             (month === nowDate.getMonth() &&
@@ -84,33 +89,20 @@ instance({ url: "/channels" }, (error, response, data) => {
                 betaDate === nowDate.getDate() &&
                 betaYear === nowDate.getFullYear())
         ) {
-            if (year === betaYear && betaMonth === month && date === betaDate) {
-                sendHookMessage(
-                    `请注意，今日谷歌浏览器有版本更新，更新版本, ${betaVersion}`,
-                    MOBILE ? [`${MOBILE}`, `${MOBILE2}`] : "",
-                    "text",
-                    WEIXIN_WEBHOOK
-                );
-            } else
-                sendHookMessage(
-                    `请注意今日谷歌浏览器有版本，更新版本， ${version}`,
-                    MOBILE ? [`${MOBILE}`, `${MOBILE2}`] : ""
-                );
-        } else {
-            let y = year;
-            let m = month;
-            let d = date;
-            if (month === betaMonth && d < betaDate) {
-                y = betaYear;
-                m = betaMonth;
-                d = beta;
-            }
             sendHookMessage(
-                `谷歌浏览器下次更新时间:${y}-${m + 1}-${d}`,
+                `请注意今日谷歌浏览器有版本，更新版本， ${version}`,
                 MOBILE ? [`${MOBILE}`, `${MOBILE2}`] : "",
                 "text",
-                // 每日
-                WEIXIN_WEBHOOK
+                // 康复
+                WEIXIN_WEBHOOK1
+            );
+        } else {
+            sendHookMessage(
+                `谷歌浏览器下次更新时间:${y}-${nextMonth + 1}-${nextDate}`,
+                MOBILE ? [`${MOBILE}`, `${MOBILE2}`] : "",
+                "text",
+                // 康复
+                WEIXIN_WEBHOOK1
             );
         }
     })
@@ -119,8 +111,8 @@ instance({ url: "/channels" }, (error, response, data) => {
             `警告：接口请求异常，请及时处理\n ${err}`,
             MOBILE ? [`${MOBILE}`] : "",
             "text",
-            //康复
-            WEIXIN_WEBHOOK1
+            // 每天
+            WEIXIN_WEBHOOK
         );
     });
 
