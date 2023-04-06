@@ -27,28 +27,51 @@ instance({ url: "/channels" }, (error, response, data) => {
         } else {
             chromeData = result.data;
         }
+        const nowDate = new Date();
+        // stable 数据
         const stable = chromeData?.stable ?? {};
-        const beta = chromeData?.beta ?? {};
-        const stableUpdateTime = stable?.next_stable_refresh
-            ? stable?.next_stable_refresh
+        // stable 时间
+        const stableTime = stable?.late_stable_date
+            ? stable?.late_stable_date
             : stable?.stable_date;
+        const nextRefreshTime = stable?.next_stable_refresh;
+        //stable 版本
+        const version = stable?.mstone;
+        // bate 数据
+        const beta = chromeData?.beta ?? {};
         const betaUpdateTime = beta?.late_stable_date
             ? beta?.late_stable_date
             : beta?.stable_date;
-        const version = stable?.mstone;
         const betaVersion = beta?.mstone;
-        const time2date = new Date(stableUpdateTime);
+
+        const time2date = new Date(stableTime);
+        const nextTime2date = new Date(nextRefreshTime);
         const betaTime2date = new Date(betaUpdateTime);
         // 因为谷歌上的升级时间表上的时间与预期会延迟个一天，大概是时区和地区更新不一致，所以将获取到的日期加一天
-        time2date.setDate(time2date.getDate() + 1);
+        if (!stable?.late_stable_date)
+            time2date.setDate(time2date.getDate() + 1);
+        nextTime2date.setDate(time2date.getDate() + 1);
         if (!beta?.late_stable_date)
             betaTime2date.setDate(betaTime2date.getDate() + 1);
+        // stable 首次更新时间
+        let year = time2date.getFullYear();
+        let month = time2date.getMonth();
+        let date = time2date.getDate();
+        // stable 下次更新时间
+        const nextYear = nextTime2date.getFullYear();
+        const nextMonth = nextTime2date.getMonth();
+        const nextDate = nextTime2date.getDate();
+        //当前时间
+        const nowYear = nowDate.getFullYear();
+        const nowMonth = nowDate.getMonth();
+        const nowDay = nowDate.getDate();
+        if (nowYear > year && nowMonth > month && nowDay > date) {
+            year = nextYear;
+            month = nextMonth;
+            date = nextDate;
+        }
 
-        const year = time2date.getFullYear();
-        const month = time2date.getMonth();
-        const date = time2date.getDate();
-        const nowDate = new Date();
-
+        // beta 更新时间
         const betaYear = betaTime2date.getFullYear();
         const betaMonth = betaTime2date.getMonth();
         const betaDate = betaTime2date.getDate();
@@ -64,7 +87,9 @@ instance({ url: "/channels" }, (error, response, data) => {
             if (year === betaYear && betaMonth === month && date === betaDate) {
                 sendHookMessage(
                     `请注意，今日谷歌浏览器有版本更新，更新版本, ${betaVersion}`,
-                    MOBILE ? [`${MOBILE}`, `${MOBILE2}`] : ""
+                    MOBILE ? [`${MOBILE}`, `${MOBILE2}`] : "",
+                    "text",
+                    WEIXIN_WEBHOOK
                 );
             } else
                 sendHookMessage(
@@ -72,12 +97,16 @@ instance({ url: "/channels" }, (error, response, data) => {
                     MOBILE ? [`${MOBILE}`, `${MOBILE2}`] : ""
                 );
         } else {
+            let y = year;
+            let m = month;
+            let d = date;
+            if (month === betaMonth && d < betaDate) {
+                y = betaYear;
+                m = betaMonth;
+                d = beta;
+            }
             sendHookMessage(
-                `谷歌浏览器下次更新时间:${
-                    stable?.next_stable_refresh ? year : betaYear
-                }-${stable?.next_stable_refresh ? month + 1 : betaMonth + 1}-${
-                    stable?.next_stable_refresh ? date : betaDate
-                }`,
+                `谷歌浏览器下次更新时间:${y}-${m + 1}-${d}`,
                 MOBILE ? [`${MOBILE}`, `${MOBILE2}`] : "",
                 "text",
                 // 每日
