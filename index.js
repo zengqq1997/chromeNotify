@@ -91,10 +91,8 @@ instance({ url: "/channels" }, (error, response, data) => {
         ) {
             sendHookMessage(
                 `请注意今日谷歌浏览器有版本，更新版本， ${version}`,
-                MOBILE ? [`${MOBILE}`, `${MOBILE2}`] : "",
-                "text",
-                // 康复
-                WEIXIN_WEBHOOK1
+                MOBILE ? [`${MOBILE}`, `${MOBILE2}`] : ""
+ 
             );
         } else {
             sendHookMessage(
