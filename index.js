@@ -34,7 +34,9 @@ instance({ url: "/channels" }, (error, response, data) => {
         const stableTime = stable?.late_stable_date
             ? stable?.late_stable_date
             : stable?.stable_date;
-        const nextRefreshTime = stable?.next_stable_refresh;
+        const nextRefreshTime = stable?.next_late_stable_refresh?
+              stable?.next_late_stable_refresh
+              :stable?.next_stable_refresh;
         //stable 版本
         const version = stable?.mstone ? stable.mstone : stable?.version;
         // bate 数据
@@ -49,7 +51,8 @@ instance({ url: "/channels" }, (error, response, data) => {
         // 因为谷歌上的升级时间表上的时间与预期会延迟个一天，大概是时区和地区更新不一致，所以将获取到的日期加一天
         if (!stable?.late_stable_date)
             time2date.setDate(time2date.getDate() + 1);
-        nextTime2date.setDate(time2date.getDate() + 1);
+        if(!stable?.next_late_stable_refresh)
+            nextTime2date.setDate(nextTime2date.getDate() + 1);
         if (!beta?.late_stable_date)
             betaTime2date.setDate(betaTime2date.getDate() + 1);
         // stable 首次更新时间
