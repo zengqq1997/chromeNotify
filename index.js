@@ -99,7 +99,7 @@ instance({ url: "/channels" }, (error, response, data) => {
             );
         } else {
             sendHookMessage(
-                `谷歌浏览器下次更新时间:${y}-${nextMonth + 1}-${nextDate}`,
+                `谷歌浏览器下次更新时间:${nextYear}-${nextMonth + 1}-${nextDate}`,
                 MOBILE ? [`${MOBILE}`, `${MOBILE2}`] : "",
                 "text",
                 // 康复
