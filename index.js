@@ -1,7 +1,7 @@
 const axios = require("axios");
 const execSync = require("./exec");
 const {
-    WEIXIN_WEBHOOK,  // 异常提醒
+    WEIXIN_WEBHOOK, // 异常提醒
     WEIXIN_WEBHOOK1, // 每日提醒
     WEIXIN_WEBHOOK2, // 版本更新提醒
     MOBILE,
@@ -49,7 +49,7 @@ instance({ url: "/channels" }, (error, response, data) => {
         // 因为谷歌上的升级时间表上的时间与预期会延迟个一天，大概是时区和地区更新不一致，所以将获取到的日期加一天
         if (!stable?.late_stable_date)
             time2date.setDate(time2date.getDate() + 1);
-        nextTime2date.setDate(time2date.getDate() + 1);
+        nextTime2date.setDate(nextTime2date.getDate() + 1);
         if (!beta?.late_stable_date)
             betaTime2date.setDate(betaTime2date.getDate() + 1);
         // stable 首次更新时间
@@ -92,7 +92,6 @@ instance({ url: "/channels" }, (error, response, data) => {
             sendHookMessage(
                 `请注意今日谷歌浏览器有版本，更新版本， ${version}`,
                 MOBILE ? [`${MOBILE}`, `${MOBILE2}`] : ""
- 
             );
         } else {
             sendHookMessage(
