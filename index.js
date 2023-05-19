@@ -34,12 +34,14 @@ instance({ url: "/channels" }, (error, response, data) => {
         const stableTime = stable?.late_stable_date
             ? stable?.late_stable_date
             : stable?.stable_date;
-        const nextRefreshTime = stable?.next_late_stable_refresh
+        let nextRefreshTime =
+            stable?.next_stable_refresh ?? stable?.next_late_stable_refresh;
+        nextRefreshTime = stable?.next_late_stable_refresh
             ? new Date(stable?.next_late_stable_refresh) >
-              new Date(stable?.next_stable_refresh)
+              new Date(nextRefreshTime)
                 ? stable?.next_late_stable_refresh
-                : stable?.next_stable_refresh
-            : stable?.next_stable_refresh;
+                : nextRefreshTime
+            : nextRefreshTime;
         //stable 版本
         const version = stable?.mstone ? stable.mstone : stable?.version;
         // bate 数据
