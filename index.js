@@ -80,16 +80,21 @@ instance({ url: "/channels" }, (error, response, data) => {
         const betaYear = betaTime2date.getFullYear();
         const betaMonth = betaTime2date.getMonth();
         const betaDate = betaTime2date.getDate();
-        // 如果下次的更新时间的月份和beta 更新时间的月份一致，则直接用beta的更新时间
-        if (nextMonth === betaMonth && nextDate < betaDate) {
-            nextDate = betaDate;
-            nextMonth = betaMonth;
-            nextYear = betaYear;
-        }
+        // 是否超过当前时间
+        let isOver = false;
         if (nowYear > year || nowMonth > month || nowDay > date) {
-            year = nextYear;
-            month = nextMonth;
-            date = nextDate;
+            console.log("stable 已更新");
+            year = nextYear || year;
+            month = nextMonth || month;
+            date = nextDate || date;
+            isOver = true;
+        }
+        // 如果下次的更新时间的月份和beta 更新时间的月份一致，则直接用beta的更新时间
+        if ((nowMonth === betaMonth && date < betaDate) || isOver) {
+            console.log("beta 已更新");
+            date = betaDate;
+            month = betaMonth;
+            year = betaYear;
         }
 
         if (
@@ -106,9 +111,7 @@ instance({ url: "/channels" }, (error, response, data) => {
             );
         } else {
             sendHookMessage(
-                `谷歌浏览器下次更新时间:${nextYear}-${
-                    nextMonth + 1
-                }-${nextDate}`,
+                `谷歌浏览器下次更新时间:${year}-${month + 1}-${date}`,
                 MOBILE ? [`${MOBILE}`, `${MOBILE2}`] : "",
                 "text",
                 // 康复
