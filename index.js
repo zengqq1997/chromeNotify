@@ -98,12 +98,7 @@ instance({ url: "/channels" }, (error, response, data) => {
         }
 
         if (
-            (month === nowDate.getMonth() &&
-                date === nowDate.getDate() &&
-                year === nowDate.getFullYear()) ||
-            (betaMonth === nowDate.getMonth() &&
-                betaDate === nowDate.getDate() &&
-                betaYear === nowDate.getFullYear())
+           true
         ) {
             sendHookMessage(
                 `请注意今日谷歌浏览器有版本，更新版本， ${version}`,
