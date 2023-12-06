@@ -31,9 +31,7 @@ instance({ url: "/channels" }, (error, response, data) => {
         // stable 数据
         const stable = chromeData?.stable ?? {};
         // stable 时间
-        const stableTime = stable?.late_stable_date
-            ? stable?.late_stable_date
-            : stable?.stable_date;
+        const stableTime = stable?.stable_date;
         let nextRefreshTime =
             stable?.next_stable_refresh ?? stable?.next_late_stable_refresh;
         nextRefreshTime = stable?.next_late_stable_refresh
@@ -42,6 +40,7 @@ instance({ url: "/channels" }, (error, response, data) => {
                 ? stable?.next_late_stable_refresh
                 : nextRefreshTime
             : nextRefreshTime;
+
         //stable 版本
         const version = stable?.mstone ? stable.mstone : stable?.version;
         // bate 数据
@@ -80,6 +79,7 @@ instance({ url: "/channels" }, (error, response, data) => {
         const betaYear = betaTime2date.getFullYear();
         const betaMonth = betaTime2date.getMonth();
         const betaDate = betaTime2date.getDate();
+
         // 是否超过当前时间
         let isOver = false;
         if (nowYear > year || nowMonth > month || nowDay > date) {
@@ -98,8 +98,14 @@ instance({ url: "/channels" }, (error, response, data) => {
         }
 
         if (
-           true
+            (month === nowDate.getMonth() &&
+                date === nowDate.getDate() &&
+                year === nowDate.getFullYear()) ||
+            (betaMonth === nowDate.getMonth() &&
+                betaDate === nowDate.getDate() &&
+                betaYear === nowDate.getFullYear())
         ) {
+            console.log("今日更新");
             sendHookMessage(
                 `请注意今日谷歌浏览器有版本，更新版本， ${version}`,
                 MOBILE ? [`${MOBILE}`, `${MOBILE2}`] : ""
