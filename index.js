@@ -6,6 +6,8 @@ const {
     WEIXIN_WEBHOOK2, // 版本更新提醒
     MOBILE,
     MOBILE2,
+    cookie,
+    Token,
 } = require("./utils/env");
 const { sendMail } = require("./utils/mail");
 
@@ -133,12 +135,11 @@ instance(
     });
 
 // 设置请求头
-const headers = {
-    Cookie: "company_code=118720ee355711edb54ae669ad68313a; token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MDQzMzU2NzUsImp0aSI6IjgwMTk5NjQyYTcxNjRiYWM4ZGI4ZDU2YmI1YjAyZDA2IiwiaWF0IjoxNzAxNzQzNjc1LCJpc3MiOiJsZXhpYW5nbGEuY29tIiwibmJmIjoxNzAxNzQzNjY1LCJzdWIiOiIzZDFlNWJhYzcxMTQxMWVkOWQ0OWRhOGFjNDdkZTgyMyIsInN0YWZmX3V1aWQiOiJjZDE3OTBkYzcwNTgxMWVkOWI4YWFlYWRiNGMzYWFmYyIsImNvbXBhbnlfaWQiOiIxMTg3MjNkYzM1NTcxMWVkYWRkM2U2NjlhZDY4MzEzYSJ9.xog0SeRf0sHevjeizrNW2LQ9b9mIJWE5LFy3ATW4h_4; expires_in=1704335675; company_server_type=lexiang; company_display_name=%E6%98%9F%E7%BA%B5%E7%A4%BE%E5%8C%BA; ti18nLng=zh-CN; XSRF-TOKEN=Zwn%252FGEi0XDB9FqA6p1b0nSPad5cwqeMteMFUzZ3Bo7Q9l9nS6MiY4hMVYnw8wLtChRVgKZJr1U%252B6Mi9UCEaN4HOfxsz6Inz72sudNrKuFNc%253D",
-    "X-Xsrf-Token":
-        "Zwn%2FGEi0XDB9FqA6p1b0nSPad5cwqeMteMFUzZ3Bo7Q9l9nS6MiY4hMVYnw8wLtCbDoJGPM2jhCwKLidFrfFyza4FrrgOP3s2InRAyKIB4A%3D",
-};
 
+const headers = {
+    Cookie: cookie,
+    "X-Xsrf-Token": Token,
+};
 // 定义请求参数和选项
 const options = {
     url: "https://lexiangla.com/api/v1/points/check-in",
@@ -146,8 +147,8 @@ const options = {
     headers: headers,
 };
 instance(options, (error, response, data) => {
-    console.log("🚀 ~ file: index.js:144 ~ instance ~ error:", response);
-    console.log(error, response, data);
+    // console.log("🚀 ~ file: index.js:144 ~ instance ~ error:", response);
+    // console.log(error, response, data);
     // instance.del(url: string, data: any, callback: Function): void;
 })
     .then((result) => {
@@ -155,14 +156,25 @@ instance(options, (error, response, data) => {
             "🚀 ~ file: index.js:149 ~ instance ~ result:",
             result.data
         );
+        if (result.data.indexOf("<!DOCTYPE html>") > -1) {
+            sendHookMessage(
+                `token失效，请重新登录`,
+                [`${MOBILE}`],
+                "text",
+                // 每日
+                WEIXIN_WEBHOOK
+            );
+        } else {
 
-        sendHookMessage(
-            `乐享签到`,
-            [`${MOBILE}`],
-            "text",
-            // 每日
-            WEIXIN_WEBHOOK
-        );
+            sendHookMessage(
+                `乐享签到`,
+                [`${MOBILE}`],
+                "text",
+                // 每日
+                WEIXIN_WEBHOOK
+            );
+        }
+
     })
     .catch((err) => {
         console.log("🚀 ~ file: index.js:151 ~ instance ~ err:", err.response);
