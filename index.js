@@ -159,6 +159,7 @@ instance(options, (error, response, data) => {
             result.data
         );
         if (result.data.indexOf("<!DOCTYPE html>") > -1) {
+            console.log('签到失败')
             sendHookMessage(
                 `token失效，请重新登录`,
                 [`${MOBILE}`],
@@ -167,7 +168,7 @@ instance(options, (error, response, data) => {
                 WEIXIN_WEBHOOK
             );
         } else {
-
+            console.log('签到成功')
             sendHookMessage(
                 `乐享签到`,
                 [`${MOBILE}`],
@@ -179,7 +180,7 @@ instance(options, (error, response, data) => {
 
     })
     .catch((err) => {
-        console.log("🚀 ~ file: index.js:151 ~ instance ~ err:", err.response);
+        console.log("🚀 ~ file: index.js:151 ~ instance ~ err:", err);
     });
 const sendHookMessage = (
     content,
