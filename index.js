@@ -158,7 +158,7 @@ instance(options, (error, response, data) => {
             "🚀 ~ file: index.js:149 ~ instance ~ result:",
             result.data
         );
-        if (result.data.indexOf("<!DOCTYPE html>") > -1) {
+        if (typeof result.data ==='string' && result.data.indexOf("<!DOCTYPE html>") > -1) {
             console.log('签到失败')
             sendHookMessage(
                 `token失效，请重新登录`,
