@@ -6,12 +6,10 @@ const {
     WEIXIN_WEBHOOK2, // 版本更新提醒
     MOBILE,
     MOBILE2,
-    COOKIE,
-    TOKEN,
+    cookie,
+    Token,
 } = require("./utils/env");
 const { sendMail } = require("./utils/mail");
-
-console.log(COOKIE,TOKEN)
 
 // 创建忽略 SSL 的 axios 实例
 const instance = axios.create({
@@ -139,8 +137,8 @@ instance(
 // 设置请求头
 
 const headers = {
-    Cookie: COOKIE,
-    "X-Xsrf-Token": TOKEN,
+    Cookie: cookie,
+    "X-Xsrf-Token": Token,
 };
 // 定义请求参数和选项
 const options = {
@@ -158,8 +156,10 @@ instance(options, (error, response, data) => {
             "🚀 ~ file: index.js:149 ~ instance ~ result:",
             result.data
         );
-        if (typeof result.data ==='string' && result.data.indexOf("<!DOCTYPE html>") > -1) {
-            console.log('签到失败')
+        if (
+            typeof result.data === "string" &&
+            result.data.indexOf("<!DOCTYPE html>") > -1
+        ) {
             sendHookMessage(
                 `token失效，请重新登录`,
                 [`${MOBILE}`],
@@ -168,19 +168,24 @@ instance(options, (error, response, data) => {
                 WEIXIN_WEBHOOK
             );
         } else {
-            console.log('签到成功')
+            const msg = result.data?.message;
             sendHookMessage(
-                `乐享签到`,
+                `乐享签到 ${msg}`,
                 [`${MOBILE}`],
                 "text",
                 // 每日
                 WEIXIN_WEBHOOK
             );
         }
-
     })
     .catch((err) => {
-        console.log("🚀 ~ file: index.js:151 ~ instance ~ err:", err);
+        sendHookMessage(
+            `签到失败`,
+            [`${MOBILE}`],
+            "text",
+            // 每日
+            WEIXIN_WEBHOOK
+        );
     });
 const sendHookMessage = (
     content,
