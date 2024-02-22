@@ -6,8 +6,8 @@ const {
     WEIXIN_WEBHOOK2, // 版本更新提醒
     MOBILE,
     MOBILE2,
-    cookie,
-    Token,
+    COOKIE,
+    TOKEN,
 } = require("./utils/env");
 const { sendMail } = require("./utils/mail");
 
@@ -137,8 +137,8 @@ instance(
 // 设置请求头
 
 const headers = {
-    Cookie: cookie,
-    "X-Xsrf-Token": Token,
+    Cookie: COOKIE,
+    "X-Xsrf-Token": TOKEN,
 };
 // 定义请求参数和选项
 const options = {
