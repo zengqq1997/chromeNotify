@@ -115,13 +115,13 @@ instance(
                 MOBILE ? [`${MOBILE}`, `${MOBILE2}`] : ""
             );
         } else {
-            // sendHookMessage(
-            //     `谷歌浏览器下次更新时间:${year}-${month + 1}-${date}`,
-            //     MOBILE ? [`${MOBILE}`, `${MOBILE2}`] : "",
-            //     "text",
-            //     // 康复
-            //     WEIXIN_WEBHOOK1
-            // );
+            sendHookMessage(
+                `谷歌浏览器下次更新时间:${year}-${month + 1}-${date}`,
+                MOBILE ? [`${MOBILE}`, `${MOBILE2}`] : "",
+                "text",
+                // 康复
+                WEIXIN_WEBHOOK1
+            );
         }
     })
     .catch((err) => {
@@ -183,13 +183,13 @@ instance(options, (error, response, data) => {
             "🚀 ~err",
             err
         );
-        // sendHookMessage(
-        //     `签到失败`,
-        //     [`${MOBILE}`],
-        //     "text",
-        //     // 每日
-        //     WEIXIN_WEBHOOK
-        // );
+        sendHookMessage(
+            `签到失败`,
+            [`${MOBILE}`],
+            "text",
+            // 每日
+            WEIXIN_WEBHOOK
+        );
     });
 const sendHookMessage = (
     content,
