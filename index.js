@@ -179,6 +179,10 @@ instance(options, (error, response, data) => {
         }
     })
     .catch((err) => {
+        console.log(
+            "🚀 ~err",
+            err
+        );
         sendHookMessage(
             `签到失败`,
             [`${MOBILE}`],
