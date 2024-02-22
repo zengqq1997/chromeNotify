@@ -183,13 +183,13 @@ instance(options, (error, response, data) => {
             "🚀 ~err",
             err
         );
-        sendHookMessage(
-            `签到失败`,
-            [`${MOBILE}`],
-            "text",
-            // 每日
-            WEIXIN_WEBHOOK
-        );
+        // sendHookMessage(
+        //     `签到失败`,
+        //     [`${MOBILE}`],
+        //     "text",
+        //     // 每日
+        //     WEIXIN_WEBHOOK
+        // );
     });
 const sendHookMessage = (
     content,
