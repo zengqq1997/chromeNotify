@@ -14,6 +14,8 @@ env:
   MAIL_PWD: ${{ secrets.MAIL_PWD }}
   MOBILE: ${{ secrets.MOBILE }}
   MOBILE2: ${{ secrets.MOBILE2 }}
+  COOKIE: ${{ secrets.COOKIE }}
+  TOKEN: ${{ secrets.TOKEN }}
 
 jobs:
   Notify:

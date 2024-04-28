@@ -15,4 +15,7 @@ module.exports = {
   MAIL_PWD: env.MAIL_PWD,
   MOBILE: env.MOBILE,
   MOBILE2: env.MOBILE2,
+  cookie: env.COOKIE,
+  Token: env.TOKEN,
+
 };
