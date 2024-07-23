@@ -25,6 +25,23 @@ instance(
     .then((result) => {
         const cmd = `echo 123 > mainVersion.txt`;
         execSync(cmd);
+        // 定义缓存文件的路径
+const cacheFilePath = path.join(__dirname, 'cache', 'api_response.txt');
+
+// 读取缓存数据
+let apiResponse;
+try {
+  const data = fs.readFileSync(cacheFilePath, 'utf8');
+  
+  console.log("Cached API response loaded:", apiResponse);
+} catch (error) {
+  console.error("Error loading cached API response:", error);
+  process.exit(1); // 退出并返回错误状态
+}
+
+// 在这里处理通知逻辑
+// 你可以使用 apiResponse 中的数据来发送通知
+console.log("Sending notifications with the following data:", apiResponse);
         fs.writeFileSync('cache/api_response.txt', '123');
         return;
         let chromeData = {};
@@ -129,6 +146,7 @@ const options = {
     method: "post",
     headers: headers,
 };
+return;
 instance(options, (error, response, data) => {
     // console.log("🚀 ~ file: index.js:144 ~ instance ~ error:", response);
     // console.log(error, response, data);
