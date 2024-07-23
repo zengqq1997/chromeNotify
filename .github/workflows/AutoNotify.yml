@@ -32,10 +32,21 @@ jobs:
             ${{ runner.os }}-node-
       - run: npm install
       - name: Download previous version data
+        id: download-artifact
         uses: actions/download-artifact@v2
         with:
           name: version-data
           path: cache/  # 下载到 cache 目录
+        continue-on-error: true  # 如果没有找到 artifact，不会导致失败
+
+      - name: Check if previous version data exists
+        id: check-artifact
+        run: |
+          if [ -f cache/version_data.json ]; then
+            echo "Previous version data found."
+          else
+            echo "No previous version data found."
+          fi
       
       - name: Run Project
         run: |
