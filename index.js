@@ -146,48 +146,48 @@ const options = {
     method: "post",
     headers: headers,
 };
-return;
-instance(options, (error, response, data) => {
-    // console.log("🚀 ~ file: index.js:144 ~ instance ~ error:", response);
-    // console.log(error, response, data);
-    // instance.del(url: string, data: any, callback: Function): void;
-})
-    .then((result) => {
-        console.log(
-            "🚀 ~ file: index.js:149 ~ instance ~ result:",
-            result.data
-        );
-        if (
-            typeof result.data === "string" &&
-            result.data.indexOf("<!DOCTYPE html>") > -1
-        ) {
-            sendHookMessage(
-                `token失效，请重新登录`,
-                [`${MOBILE}`],
-                "text",
-                // 每日
-                WEIXIN_WEBHOOK
-            );
-        } else {
-            const msg = result.data?.message;
-            sendHookMessage(
-                `乐享签到 ${msg}`,
-                [`${MOBILE}`],
-                "text",
-                // 每日
-                WEIXIN_WEBHOOK
-            );
-        }
-    })
-    .catch((err) => {
-        sendHookMessage(
-            `签到失败`,
-            [`${MOBILE}`],
-            "text",
-            // 每日
-            WEIXIN_WEBHOOK
-        );
-    });
+
+// instance(options, (error, response, data) => {
+//     // console.log("🚀 ~ file: index.js:144 ~ instance ~ error:", response);
+//     // console.log(error, response, data);
+//     // instance.del(url: string, data: any, callback: Function): void;
+// })
+//     .then((result) => {
+//         console.log(
+//             "🚀 ~ file: index.js:149 ~ instance ~ result:",
+//             result.data
+//         );
+//         if (
+//             typeof result.data === "string" &&
+//             result.data.indexOf("<!DOCTYPE html>") > -1
+//         ) {
+//             sendHookMessage(
+//                 `token失效，请重新登录`,
+//                 [`${MOBILE}`],
+//                 "text",
+//                 // 每日
+//                 WEIXIN_WEBHOOK
+//             );
+//         } else {
+//             const msg = result.data?.message;
+//             sendHookMessage(
+//                 `乐享签到 ${msg}`,
+//                 [`${MOBILE}`],
+//                 "text",
+//                 // 每日
+//                 WEIXIN_WEBHOOK
+//             );
+//         }
+//     })
+//     .catch((err) => {
+//         sendHookMessage(
+//             `签到失败`,
+//             [`${MOBILE}`],
+//             "text",
+//             // 每日
+//             WEIXIN_WEBHOOK
+//         );
+//     });
 const sendHookMessage = (
     content,
     mentionedMobileList = ["@all"],
