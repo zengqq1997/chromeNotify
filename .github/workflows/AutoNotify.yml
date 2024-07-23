@@ -51,7 +51,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: cache/version_data.json  # 指定要缓存的文件
-          key: result-${{ runner.os }}-${{ github.sha }}  # 缓存键
+          key: result-${{ runner.os }}-${{ github.run_id }}  # 缓存键
           restore-keys: |
             result-${{ runner.os }}-
       - name: Read Cache result
