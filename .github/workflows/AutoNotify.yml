@@ -47,11 +47,14 @@ jobs:
       - name: Run Project
         run: |
           npm run notify
+      
       - name: Cache results
         uses: actions/cache@v2
         with:
           path: cache/version_data.json  # 指定要缓存的文件
-          key: result-${{ runner.os }}  # 缓存键
+          key: result-${{ runner.os }}-${{ github.run_id }}  # 缓存键
+          restore-keys: |
+            result-${{ runner.os }}
       - name: Read Cache result
         run: |
           cat cache/version_data.json  # 读取并显示版本数据内容
