@@ -46,7 +46,6 @@ const saveLocalVersionData = (data) => {
 
 // 发送钩子消息
 const sendHookMessage = (content, mentionedMobileList = ["@all"], msgtype = "text", hookUrl) => {
-    return;
     const objStr = JSON.stringify({
         msgtype,
         text: {
@@ -88,12 +87,72 @@ const checkChromeVersion = async () => {
             saveLocalVersionData(version);
             sendHookMessage(`请注意今日谷歌浏览器有版本更新，版本号：${version}`, [process.env.MOBILE, process.env.MOBILE2]);
         } else {
+            // 康复
             sendHookMessage("谷歌浏览器今日无更新", [process.env.MOBILE, process.env.MOBILE2], "text", process.env.WEIXIN_WEBHOOK1);
         }
     } catch (err) {
+        // // 每日
         sendHookMessage(`警告：接口请求异常，请及时处理\n ${err.message}`, [process.env.MOBILE], "text", process.env.WEIXIN_WEBHOOK);
     }
 };
+
+const checkIn = () => {
+    // 设置请求头
+
+    const headers = {
+        Cookie: COOKIE,
+        "X-Xsrf-Token": TOKEN,
+    };
+    // 定义请求参数和选项
+    const options = {
+        url: "https://lexiangla.com/api/v1/points/check-in",
+        method: "post",
+        headers: headers,
+    };
+    instance(options, (error, response, data) => {
+        // console.log("🚀 ~ file: index.js:144 ~ instance ~ error:", response);
+        // console.log(error, response, data);
+        // instance.del(url: string, data: any, callback: Function): void;
+    })
+        .then((result) => {
+            console.log(
+                "🚀 ~ file: index.js:149 ~ instance ~ result:",
+                result.data
+            );
+            if (
+                typeof result.data === "string" &&
+                result.data.indexOf("<!DOCTYPE html>") > -1
+            ) {
+                sendHookMessage(
+                    `token失效，请重新登录`,
+                    [`${MOBILE}`],
+                    "text",
+                    // 每日
+                    WEIXIN_WEBHOOK
+                );
+            } else {
+                const msg = result.data?.message;
+                sendHookMessage(
+                    `乐享签到 ${msg}`,
+                    [`${MOBILE}`],
+                    "text",
+                    // 每日
+                    WEIXIN_WEBHOOK
+                );
+            }
+        })
+        .catch((err) => {
+            sendHookMessage(
+                `签到失败`,
+                [`${MOBILE}`],
+                "text",
+                // 每日
+                WEIXIN_WEBHOOK
+            );
+        });
+};
+
+checkIn();
 
 // 执行版本检查
 checkChromeVersion();
