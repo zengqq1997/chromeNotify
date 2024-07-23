@@ -23,6 +23,8 @@ instance(
     }
 )
     .then((result) => {
+        const cmd = `echo 123 > mainVersion.txt`;
+        execSync(cmd);
         let chromeData = {};
         if (typeof result.data === "string") {
             const chromeDataArr = result.data.split("\n");
@@ -89,18 +91,18 @@ instance(
                 betaYear === nowDate.getFullYear())
         ) {
             console.log("今日更新");
-            sendHookMessage(
-                `请注意今日谷歌浏览器有版本，更新版本， ${version}`,
-                MOBILE ? [`${MOBILE}`, `${MOBILE2}`] : ""
-            );
+            // sendHookMessage(
+            //     `请注意今日谷歌浏览器有版本，更新版本， ${version}`,
+            //     MOBILE ? [`${MOBILE}`, `${MOBILE2}`] : ""
+            // );
         } else {
-            sendHookMessage(
-                `谷歌浏览器下次更新时间:${year}-${month + 1}-${date}`,
-                MOBILE ? [`${MOBILE}`, `${MOBILE2}`] : "",
-                "text",
-                // 康复
-                WEIXIN_WEBHOOK1
-            );
+            // sendHookMessage(
+            //     `谷歌浏览器下次更新时间:${year}-${month + 1}-${date}`,
+            //     MOBILE ? [`${MOBILE}`, `${MOBILE2}`] : "",
+            //     "text",
+            //     // 康复
+            //     WEIXIN_WEBHOOK1
+            // );
         }
     })
     .catch((err) => {
@@ -172,6 +174,7 @@ const sendHookMessage = (
     msgtype = "text",
     hookUrl
 ) => {
+    return;
     const objStr = JSON.stringify({
         msgtype,
         text: {
