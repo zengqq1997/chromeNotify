@@ -25,6 +25,8 @@ instance(
     .then((result) => {
         const cmd = `echo 123 > mainVersion.txt`;
         execSync(cmd);
+        fs.writeFileSync('cache/api_response.txt', '123');
+        return;
         let chromeData = {};
         if (typeof result.data === "string") {
             const chromeDataArr = result.data.split("\n");
