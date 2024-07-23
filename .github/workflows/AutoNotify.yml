@@ -31,15 +31,12 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
       - run: npm install
-      - name: Download version data
+      - name: Download previous version data
         uses: actions/download-artifact@v2
         with:
           name: version-data
-
-      - name: Read version data
-        run: |
-          echo "Version data:"
-          cat cache/version_data.json  # 读取并显示版本数据内容
+          path: cache/  # 下载到 cache 目录
+      
       - name: Run Project
         run: |
           npm run notify
@@ -48,3 +45,7 @@ jobs:
         with:
           name: version-data
           path: cache/version_data.json  # 上传存储版本数据的文件
+      - name: Read version data
+        run: |
+          echo "Version data:"
+          cat cache/version_data.json  # 读取并显示版本数据内容
