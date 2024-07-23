@@ -47,8 +47,7 @@ jobs:
       - name: Run Project
         run: |
           npm run notify
-      
-      - name: Cache results
+      - name: Cache result
         uses: actions/cache@v2
         with:
           path: cache/version_data.json  # 指定要缓存的文件
