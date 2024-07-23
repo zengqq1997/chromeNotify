@@ -52,12 +52,7 @@ jobs:
         with:
           path: cache/version_data.json  # 指定要缓存的文件
           key: result-${{ runner.os }}-${{ github.sha }}  # 缓存键
-      - name: Upload version data
-        uses: actions/upload-artifact@v2
-        with:
-          name: version-data
-          path: cache/version_data.json  # 上传存储版本数据的文件
-      - name: Read version data
+      - name: Read Cache result
         run: |
           echo `result-${{ runner.os }}-${{ github.sha }}`
           cat cache/version_data.json  # 读取并显示版本数据内容
