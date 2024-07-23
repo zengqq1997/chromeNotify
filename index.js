@@ -46,6 +46,7 @@ const saveLocalVersionData = (data) => {
 
 // 发送钩子消息
 const sendHookMessage = (content, mentionedMobileList = ["@all"], msgtype = "text", hookUrl) => {
+    return;
     const objStr = JSON.stringify({
         msgtype,
         text: {
@@ -78,12 +79,13 @@ const checkChromeVersion = async () => {
         
         // 读取本地版本数据
         const localData = readLocalVersionData();
+        console.log(11111, localData)
         const localVersion = localData ? localData.version.split(".")[0] : null;
 
         // 判断是否有更新
         if (!localVersion || mainVersion > localVersion) {
             // 更新本地版本
-            saveLocalVersionData(nowVersionObj);
+            saveLocalVersionData(version);
             sendHookMessage(`请注意今日谷歌浏览器有版本更新，版本号：${version}`, [process.env.MOBILE, process.env.MOBILE2]);
         } else {
             sendHookMessage("谷歌浏览器今日无更新", [process.env.MOBILE, process.env.MOBILE2], "text", process.env.WEIXIN_WEBHOOK1);
