@@ -79,7 +79,7 @@ const checkChromeVersion = async () => {
         // 读取本地版本数据
         const localData = readLocalVersionData();
         console.log(11111, localData)
-        const localVersion = localData ? localData.version.split(".")[0] : null;
+        const localVersion = localData ? localData.split(".")[0] : null;
 
         // 判断是否有更新
         if (!localVersion || mainVersion > localVersion) {
