@@ -46,6 +46,7 @@ const saveLocalVersionData = (data) => {
 
 // 发送钩子消息
 const sendHookMessage = (content, mentionedMobileList = ["@all"], msgtype = "text", hookUrl) => {
+    return;
     const objStr = JSON.stringify({
         msgtype,
         text: {
