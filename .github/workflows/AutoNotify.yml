@@ -31,29 +31,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
       - run: npm install
-      - name: Restore cached results
-        uses: actions/cache@v2
-        with:
-          path: cache/version_data.json  # 指定要恢复的文件
-          key: result-${{ runner.os }}-9a23620cb7fc0673d62f8f57a4b20a24942ef41117e72cd14469cf83f49c3090  # 与第一次执行相同的键
-      - name: Check if results file exists
-        run: |
-          if [ -f cache/version_data.json ]; then
-            echo "Previous results found:"
-            cat cache/version_data.json
-          else
-            echo "No previous results found."
-          fi
       - name: Run Project
         run: |
           npm run notify
-      - name: Cache result
-        uses: actions/cache@v2
-        with:
-          path: cache/version_data.json  # 指定要缓存的文件
-          key: result-${{ runner.os }}-${{ hashFiles('cache/version_data.json') }}  # 缓存键
-          restore-keys: |
-            result-${{ runner.os }}-
-      - name: Read Cache result
-        run: |
-          cat cache/version_data.json  # 读取并显示版本数据内容
