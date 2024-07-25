@@ -34,7 +34,7 @@ const versionDataFile = `${cacheDir}/version_data.json`;
 const readLocalVersionData = () => {
     if (fs.existsSync(versionDataFile)) {
         const data = fs.readFileSync(versionDataFile);
-        return JSON.parse(data);
+        return data;
     }
     return null;
 };
@@ -42,8 +42,11 @@ const readLocalVersionData = () => {
 // 保存版本数据到本地文件
 const saveLocalVersionData = (data) => {
     return new Promise((resolve, reject) => {
-        fs.writeFile(versionDataFile, JSON.stringify(data, null, 2), (err) => {
-            if (err) reject(err);
+        fs.writeFile(versionDataFile, data, (err) => {
+            if (err){
+                console.error(err);
+                reject(err);
+            }
             resolve();
         });
     })
