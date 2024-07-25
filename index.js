@@ -41,7 +41,12 @@ const readLocalVersionData = () => {
 
 // 保存版本数据到本地文件
 const saveLocalVersionData = (data) => {
-    fs.writeFileSync(versionDataFile, JSON.stringify(data, null, 2));
+    return new Promise((resolve, reject) => {
+        fs.writeFile(versionDataFile, JSON.stringify(data, null, 2), (err) => {
+            if (err) reject(err);
+            resolve();
+        });
+    })
 };
 
 // 发送钩子消息
@@ -85,7 +90,10 @@ const checkChromeVersion = async () => {
         // 判断是否有更新
         if (!localVersion || mainVersion > localVersion) {
             // 更新本地版本
-            saveLocalVersionData(version);
+            console.log(2222, version)
+            await saveLocalVersionData(version);
+            const localData1 = readLocalVersionData();
+            console.log(3333, localData)
             sendHookMessage(`请注意今日谷歌浏览器有版本更新，版本号：${version}`, [process.env.MOBILE, process.env.MOBILE2]);
         } else {
             // 康复
@@ -153,7 +161,7 @@ const checkIn = () => {
         });
 };
 
-checkIn();
+// checkIn();
 
 // 执行版本检查
 checkChromeVersion();
