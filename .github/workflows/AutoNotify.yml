@@ -35,7 +35,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: cache/version_data.json  # 指定要恢复的文件
-          key: result-${{ runner.os }}-  # 与第一次执行相同的键
+          key: result-${{ runner.os }}-9a23620cb7fc0673d62f8f57a4b20a24942ef41117e72cd14469cf83f49c3090  # 与第一次执行相同的键
       - name: Check if results file exists
         run: |
           if [ -f cache/version_data.json ]; then
