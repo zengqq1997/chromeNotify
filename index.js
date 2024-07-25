@@ -34,7 +34,8 @@ const versionDataFile = `${cacheDir}/version_data.json`;
 const readLocalVersionData = () => {
     if (fs.existsSync(versionDataFile)) {
         const data = fs.readFileSync(versionDataFile);
-        return data;
+        console.log(5555, data, JSON.parse(data))
+        return JSON.parse(data);
     }
     return null;
 };
