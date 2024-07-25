@@ -98,7 +98,7 @@ const checkChromeVersion = async () => {
             console.log(2222, version)
             await saveLocalVersionData(version);
             const localData1 = readLocalVersionData();
-            console.log(3333, localData)
+            console.log(3333, localData1)
             sendHookMessage(`请注意今日谷歌浏览器有版本更新，版本号：${version}`, [process.env.MOBILE, process.env.MOBILE2]);
         } else {
             // 康复
