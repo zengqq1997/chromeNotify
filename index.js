@@ -43,12 +43,13 @@ const readLocalVersionData = () => {
 // 保存版本数据到本地文件
 const saveLocalVersionData = (data) => {
     return new Promise((resolve, reject) => {
-        fs.writeFile(versionDataFile, data, (err) => {
+        fs.writeFile(versionDataFile, JSON.stringify(data, null, 2), (err) => {
             if (err){
                 console.error(err);
                 reject(err);
+            } else {
+                resolve();
             }
-            resolve();
         });
     })
 };
