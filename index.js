@@ -80,7 +80,7 @@ const checkChromeVersion = async () => {
         } else {
             // 康复
             sendHookMessage(
-                `距离上次更新 ${diffTime} 天`,
+                `距离上次更新 ${diffDays} 天`,
                 [process.env.MOBILE, process.env.MOBILE2],
                 "text",
                 process.env.WEIXIN_WEBHOOK1
