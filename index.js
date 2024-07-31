@@ -158,4 +158,4 @@ const checkIn = () => {
 checkIn();
 
 // 执行版本检查
-// checkChromeVersion();
+checkChromeVersion();
