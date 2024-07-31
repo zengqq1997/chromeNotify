@@ -143,6 +143,7 @@ const checkIn = () => {
             }
         })
         .catch((err) => {
+            console.log('签到错误信息',err)
             sendHookMessage(
                 `签到失败`,
                 [`${MOBILE}`],
@@ -156,4 +157,4 @@ const checkIn = () => {
 checkIn();
 
 // 执行版本检查
-checkChromeVersion();
+// checkChromeVersion();
