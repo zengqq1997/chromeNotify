@@ -29,7 +29,6 @@ const sendHookMessage = (
     msgtype = "text",
     hookUrl
 ) => {
-    return;
     const objStr = JSON.stringify({
         msgtype,
         text: {
